@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://gitlab.com/bomunto/ekko-ios",
       "state" : {
-        "revision" : "1b928b36762d44760bf7586adfbe4e3a74dd7068",
-        "version" : "1.0.6"
+        "revision" : "2c20b55932521270417c286f691b684a1ab0e4cc",
+        "version" : "1.0.7"
       }
     }
   ],
