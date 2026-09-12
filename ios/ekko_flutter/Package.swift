@@ -13,7 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "FlutterFramework", path: "../FlutterFramework"),
-        .package(url: "https://gitlab.com/bomunto/ekko-ios", from: "1.0.7")
+        .package(url: "https://gitlab.com/bomunto/ekko-ios", from: "1.1.0")
     ],
     targets: [
         .target(

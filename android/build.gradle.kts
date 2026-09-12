@@ -56,5 +56,5 @@ kotlin {
 }
 
 dependencies {
-    implementation("com.bomunto.ekko:ekko-android:1.0.1")
+    implementation("com.bomunto.ekko:ekko-android:1.1.0")
 }
