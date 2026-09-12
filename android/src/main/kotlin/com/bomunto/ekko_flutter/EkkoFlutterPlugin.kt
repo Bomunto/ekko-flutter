@@ -38,7 +38,7 @@ class EkkoFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
           return
         }
         val baseUrl = call.argument<String>("baseUrl") ?: "https://ekko.bomunto.com"
-        Ekko.configure(context.applicationContext as Application, publicKey, baseUrl)
+        Ekko.configure(context.applicationContext as Application, publicKey, baseUrl, activity)
         result.success(null)
       }
       "present" -> {

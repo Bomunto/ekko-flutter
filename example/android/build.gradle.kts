@@ -2,6 +2,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // The ekko Android library, until the GitLab Maven registry is wired up:
+        // `./gradlew :ekko:publishToMavenLocal` in packages/android.
+        mavenLocal()
     }
 }
 

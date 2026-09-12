@@ -1,6 +1,6 @@
 name: ekko_flutter_example
 description: "Imara — the ekko_flutter example shop."
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
