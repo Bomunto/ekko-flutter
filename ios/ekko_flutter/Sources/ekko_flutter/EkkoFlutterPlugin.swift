@@ -7,6 +7,17 @@ public class EkkoFlutterPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "bomunto.ekko", binaryMessenger: registrar.messenger())
     registrar.addMethodCallDelegate(EkkoFlutterPlugin(), channel: channel)
+    // Flutter draws in a Metal layer UIKit cannot read: the screenshot comes
+    // from Flutter's own render tree, through the channel.
+    Ekko.captureProvider = { done in
+      channel.invokeMethod("captureScreen", arguments: nil) { reply in
+        if let bytes = reply as? FlutterStandardTypedData, let image = UIImage(data: bytes.data) {
+          done(image)
+        } else {
+          done(nil)
+        }
+      }
+    }
   }
 
   // Method-channel calls land on the platform thread, and the ekko SDK is
