@@ -9,7 +9,7 @@ No UI lives in Dart — everything visible comes from the ekko dashboard.
 
 ```yaml
 dependencies:
-  ekko_flutter: ^1.0.0
+  ekko_flutter: ^1.1.0
 ```
 
 ### iOS
@@ -50,3 +50,18 @@ void main() async {
 - `Ekko.present()` opens the report sheet.
 - `Ekko.identifyTester(token)` binds the session to an invited tester.
 - `Ekko.handle(uri)` feeds an invitation link; returns whether ekko handled it.
+- `Ekko.screen(name)` names the screen the tester is on; it lands in the report's
+  timeline and in « Pour reproduire ».
+- `Ekko.log(message, level: 'error')` adds a line to the report's console
+  (`log | info | warn | error | debug`).
+- `Ekko.recordRequest(method: 'POST', url: '…', status: 503, durationMs: 812)`
+  adds a call to the report's network log — never a body, never a header.
+
+Routes name themselves: add the observer and name your routes.
+
+```dart
+MaterialApp(
+  navigatorObservers: [EkkoNavigatorObserver()],
+  // …
+)
+```

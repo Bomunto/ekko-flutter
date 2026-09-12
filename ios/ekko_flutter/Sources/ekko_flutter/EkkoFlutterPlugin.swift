@@ -39,6 +39,23 @@ public class EkkoFlutterPlugin: NSObject, FlutterPlugin {
     case "handle":
       let handled = (args["url"] as? String).flatMap(URL.init(string:)).map(Ekko.handle(url:)) ?? false
       result(handled)
+    case "screen":
+      if let name = args["name"] as? String { Ekko.screen(name) }
+      result(nil)
+    case "log":
+      if let message = args["message"] as? String {
+        Ekko.log(message, level: args["level"] as? String ?? "info")
+      }
+      result(nil)
+    case "recordRequest":
+      guard let method = args["method"] as? String, let url = args["url"] as? String else { return result(nil) }
+      Ekko.recordRequest(
+        method: method,
+        url: url,
+        status: args["status"] as? Int,
+        durationMs: args["durationMs"] as? Int
+      )
+      result(nil)
     default: result(FlutterMethodNotImplemented)
     }
   }

@@ -1,6 +1,6 @@
 name: ekko_flutter
 description: "Signalez un bug en un tap : capture, stylo rouge, message."
-version: 1.0.0
+version: 1.1.0
 homepage: https://ekko.bomunto.com
 
 environment:

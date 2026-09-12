@@ -37,7 +37,9 @@ class ImaraApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: _ekkoPurple),
         useMaterial3: true,
       ),
-      home: const ImaraHome(),
+      navigatorObservers: [EkkoNavigatorObserver()],
+      initialRoute: '/',
+      routes: {'/': (_) => const ImaraHome()},
     );
   }
 }
@@ -55,6 +57,18 @@ class _ImaraHomeState extends State<ImaraHome> {
   static const _titles = ['Boutique', 'Panier', 'Compte'];
 
   @override
+  void initState() {
+    super.initState();
+    Ekko.screen(_titles[_tab]);
+  }
+
+  void _selectTab(int index) {
+    setState(() => _tab = index);
+    // Tabs are not routes: the observer never sees them, so name them here.
+    Ekko.screen(_titles[index]);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +82,7 @@ class _ImaraHomeState extends State<ImaraHome> {
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _tab,
-        onDestinationSelected: (i) => setState(() => _tab = i),
+        onDestinationSelected: _selectTab,
         destinations: const [
           NavigationDestination(icon: Icon(Icons.storefront_outlined), selectedIcon: Icon(Icons.storefront), label: 'Boutique'),
           NavigationDestination(icon: Icon(Icons.shopping_bag_outlined), selectedIcon: Icon(Icons.shopping_bag), label: 'Panier'),
@@ -79,8 +93,8 @@ class _ImaraHomeState extends State<ImaraHome> {
   }
 }
 
-class _Article {
-  const _Article(this.name, this.price, this.icon);
+class Article {
+  const Article(this.name, this.price, this.icon);
   final String name;
   final String price;
   final IconData icon;
@@ -90,10 +104,10 @@ class ShopTab extends StatelessWidget {
   const ShopTab({super.key});
 
   static const _articles = [
-    _Article('Sac Wax Douala', '18 500 F', Icons.shopping_basket_outlined),
-    _Article('Chemise Kente', '12 000 F', Icons.checkroom_outlined),
-    _Article('Sandales Bamenda', '9 500 F', Icons.hiking_outlined),
-    _Article('Foulard Bogolan', '6 000 F', Icons.dry_cleaning_outlined),
+    Article('Sac Wax Douala', '18 500 F', Icons.shopping_basket_outlined),
+    Article('Chemise Kente', '12 000 F', Icons.checkroom_outlined),
+    Article('Sandales Bamenda', '9 500 F', Icons.hiking_outlined),
+    Article('Foulard Bogolan', '6 000 F', Icons.dry_cleaning_outlined),
   ];
 
   @override
@@ -111,7 +125,14 @@ class ShopTab extends StatelessWidget {
         final article = _articles[i];
         return Card(
           clipBehavior: Clip.antiAlias,
-          child: Column(
+          child: InkWell(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                settings: RouteSettings(name: 'Article ${article.name}'),
+                builder: (_) => ArticlePage(article: article),
+              ),
+            ),
+            child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
@@ -132,9 +153,41 @@ class ShopTab extends StatelessWidget {
                 ),
               ),
             ],
+            ),
           ),
         );
       },
+    );
+  }
+}
+
+class ArticlePage extends StatelessWidget {
+  const ArticlePage({super.key, required this.article});
+
+  final Article article;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(article.name),
+        backgroundColor: _ekkoPurple,
+        foregroundColor: Colors.white,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            height: 220,
+            color: _ekkoPurple.withValues(alpha: 0.12),
+            child: Icon(article.icon, size: 96, color: _ekkoPurple),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(article.price, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -155,7 +208,16 @@ class _CartTabState extends State<CartTab> {
       _ordering = true;
       _failed = false;
     });
+    await Ekko.log('Commande envoyée — total 20 000 F');
+    final started = DateTime.now();
     await Future<void>.delayed(const Duration(seconds: 2));
+    await Ekko.recordRequest(
+      method: 'POST',
+      url: 'https://api.imara.cm/orders',
+      status: 503,
+      durationMs: DateTime.now().difference(started).inMilliseconds,
+    );
+    await Ekko.log('Paiement indisponible (503)', level: 'error');
     if (!mounted) return;
     setState(() {
       _ordering = false;

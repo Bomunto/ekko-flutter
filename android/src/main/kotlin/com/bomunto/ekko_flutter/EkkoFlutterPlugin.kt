@@ -53,6 +53,23 @@ class EkkoFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         val url = call.argument<String>("url")
         result.success(if (url == null) false else Ekko.handle(Uri.parse(url)))
       }
+      "screen" -> {
+        call.argument<String>("name")?.let { Ekko.screen(it) }
+        result.success(null)
+      }
+      "log" -> {
+        val message = call.argument<String>("message")
+        if (message != null) Ekko.log(message, call.argument<String>("level") ?: "info")
+        result.success(null)
+      }
+      "recordRequest" -> {
+        val method = call.argument<String>("method")
+        val url = call.argument<String>("url")
+        if (method != null && url != null) {
+          Ekko.recordRequest(method, url, call.argument<Int>("status"), call.argument<Int>("durationMs"))
+        }
+        result.success(null)
+      }
       else -> result.notImplemented()
     }
   }
