@@ -16,7 +16,8 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()
+        // The ekko Android library, from the GitLab package registry.
+        maven("https://gitlab.com/api/v4/projects/86375044/packages/maven")
         google()
         mavenCentral()
     }
