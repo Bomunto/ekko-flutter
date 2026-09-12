@@ -1,0 +1,26 @@
+name: ekko_flutter
+description: "Signalez un bug en un tap : capture, stylo rouge, message."
+version: 1.0.0
+homepage: https://ekko.bomunto.com
+
+environment:
+  sdk: ^3.5.0
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    platforms:
+      ios:
+        pluginClass: EkkoFlutterPlugin
+      android:
+        package: com.bomunto.ekko_flutter
+        pluginClass: EkkoFlutterPlugin
