@@ -15,12 +15,12 @@ dependencies:
 ### iOS
 
 Minimum deployment target `16.0`. The native SDK is pulled either by Swift Package
-Manager (the plugin's `Package.swift` depends on `https://gitlab.com/bomunto/ekko-ios`)
+Manager (the plugin's `Package.swift` depends on `https://github.com/bomunto/ekko-ios`)
 or by CocoaPods — in that case add to `ios/Podfile`:
 
 ```ruby
 platform :ios, '16.0'
-pod 'Ekko', :git => 'https://gitlab.com/bomunto/ekko-ios.git', :tag => '1.0.1'
+pod 'Ekko', :git => 'https://github.com/bomunto/ekko-ios.git', :tag => '1.1.1'
 ```
 
 `Info.plist` keys, if you want the voice note:
