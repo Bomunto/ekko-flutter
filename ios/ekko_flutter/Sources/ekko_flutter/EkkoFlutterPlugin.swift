@@ -3,11 +3,15 @@ import Flutter
 import UIKit
 
 public class EkkoFlutterPlugin: NSObject, FlutterPlugin {
+  @MainActor
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "bomunto.ekko", binaryMessenger: registrar.messenger())
     registrar.addMethodCallDelegate(EkkoFlutterPlugin(), channel: channel)
   }
 
+  // Method-channel calls land on the platform thread, and the ekko SDK is
+  // main-actor isolated.
+  @MainActor
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     let args = call.arguments as? [String: Any] ?? [:]
     switch call.method {

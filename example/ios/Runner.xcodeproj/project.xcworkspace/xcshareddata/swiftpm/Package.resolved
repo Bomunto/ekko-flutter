@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "ekko-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://gitlab.com/bomunto/ekko-ios",
+      "state" : {
+        "revision" : "dbff254807bd6e131d8a85c81070b34337e9ad67",
+        "version" : "1.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}
